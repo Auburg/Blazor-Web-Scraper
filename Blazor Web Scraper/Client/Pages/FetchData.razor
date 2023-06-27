@@ -1,0 +1,43 @@
+﻿@page "/fetchdata"
+@using BlazorApp1.Shared
+@inject HttpClient Http
+
+<PageTitle>Author Quotes</PageTitle>
+
+<h1>Quotes by Author</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (_authorQuotes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Author</th>
+                <th>Quote</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var aq in _authorQuotes)
+            {
+                <tr>
+                    <td>@aq.Author</td>
+                    <td>@aq.Text</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private AuthorQuote[]? _authorQuotes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _authorQuotes = await Http.GetFromJsonAsync<AuthorQuote[]>("AuthorQuotes");
+    }
+}

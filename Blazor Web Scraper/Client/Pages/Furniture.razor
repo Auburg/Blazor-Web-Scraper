@@ -1,0 +1,39 @@
+﻿@page "/Furniture"
+@inject HttpClient Http
+
+<PageTitle>Furniture</PageTitle>
+
+<h3>Categories</h3>
+
+@if (_categories == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Category</th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach (var cat in _categories)
+        {
+            <tr>
+                <td>@cat</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    
+    private string[]? _categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _categories = await Http.GetFromJsonAsync<string[]>("Furniture");
+    }
+}
